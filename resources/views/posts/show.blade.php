@@ -6,29 +6,11 @@
 @section('content')
 <div class="max-w-4xl mx-auto">
     <!-- Breadcrumb -->
-    <nav class="mb-8">
-        <ol class="flex items-center space-x-2 text-sm text-gray-500">
-            <li>
-                <a href="{{ route('home') }}" class="hover:text-blue-600">Home</a>
-            </li>
-            <li>
-                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                </svg>
-            </li>
-            <li>
-                <a href="{{ route('category.show', $post->category->slug) }}" class="hover:text-blue-600">
-                    {{ $post->category->name }}
-                </a>
-            </li>
-            <li>
-                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                </svg>
-            </li>
-            <li class="text-gray-900">{{ Str::limit($post->title, 50) }}</li>
-        </ol>
-    </nav>
+    <x-breadcrumb :items="[
+        ['title' => 'Home', 'url' => route('home')],
+        ['title' => $post->category->name, 'url' => route('category.show', $post->category->slug)],
+        ['title' => Str::limit($post->title, 50)]
+    ]" />
 
     <!-- Article Header -->
     <header class="mb-8">
