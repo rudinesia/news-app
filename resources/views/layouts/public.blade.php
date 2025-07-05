@@ -55,7 +55,9 @@
                              class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50"
                              style="display: none;">
                             @php
-                                $categories = \App\Models\Category::withCount('posts')->orderBy('name')->get();
+                                $categories = \App\Models\Category::withCount(['posts' => function ($query) {
+                                    $query->where('status', 'published');
+                                }])->orderBy('name')->get();
                             @endphp
                             @foreach($categories as $category)
                                 <a href="{{ route('category.show', $category->slug) }}" 
@@ -103,19 +105,24 @@
             </div>
 
             <!-- Mobile Navigation -->
-            <div x-show="mobileMenuOpen" 
+            <div x-show="mobileMenuOpen"
                  x-data="{ mobileMenuOpen: false }"
                  class="md:hidden border-t border-gray-200 py-4"
                  style="display: none;">
                 <div class="space-y-2">
-                    <a href="{{ route('home') }}" 
+                    <a href="{{ route('home') }}"
                        class="block text-gray-700 hover:text-blue-600 font-medium py-2">
                         Home
                     </a>
-                    
+
                     <div class="py-2">
                         <p class="text-gray-500 text-sm font-medium mb-2">Categories</p>
-                        @foreach($categories as $category)
+                        @php
+                            $mobileCategories = \App\Models\Category::withCount(['posts' => function ($query) {
+                                $query->where('status', 'published');
+                            }])->orderBy('name')->get();
+                        @endphp
+                        @foreach($mobileCategories as $category)
                             <a href="{{ route('category.show', $category->slug) }}" 
                                class="block text-gray-600 hover:text-blue-600 py-1 pl-4">
                                 {{ $category->name }} ({{ $category->posts_count }})

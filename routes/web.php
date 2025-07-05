@@ -24,8 +24,8 @@ use App\Http\Controllers\PublicPageController;
 
 // Public Routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/posts/{slug}', [PublicPostController::class, 'show'])->name('posts.show');
-Route::get('/category/{slug}', [PublicPostController::class, 'category'])->name('category.show');
+Route::get('/posts/{post:slug}', [PublicPostController::class, 'show'])->name('posts.show');
+Route::get('/category/{category:slug}', [PublicPostController::class, 'category'])->name('category.show');
 Route::get('/page/{slug}', [PublicPageController::class, 'show'])->name('pages.show');
 
 // Authentication Routes

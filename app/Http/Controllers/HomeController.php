@@ -18,7 +18,9 @@ class HomeController extends Controller
             ->latest()
             ->paginate(10);
 
-        $categories = Category::withCount('posts')->get();
+        $categories = Category::withCount(['posts' => function ($query) {
+            $query->where('status', 'published');
+        }])->get();
 
         return view('home', compact('posts', 'categories'));
     }

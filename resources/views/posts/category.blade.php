@@ -130,7 +130,9 @@
     <!-- Other Categories -->
     @php
         $otherCategories = \App\Models\Category::where('id', '!=', $category->id)
-            ->withCount('posts')
+            ->withCount(['posts' => function ($query) {
+                $query->where('status', 'published');
+            }])
             ->orderBy('name')
             ->limit(6)
             ->get();
